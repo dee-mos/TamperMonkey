@@ -9,7 +9,6 @@
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/datetime.js
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/dom.js
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/KolorWheel.min.js
-// @require      file://E:\DimusGreasemonkey\3rd\tsl.js
 // @resource     animated_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animated.css
 // @resource     animation2_css  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animation2.css
 // @grant        GM_addStyle
@@ -61,7 +60,7 @@ function set_comment_attributes(indx, element)
 {
   author = $('cite:first', element).text().trim();
   $(element).attr('author',author);
-  if("KPOBOCOC" == author) $(element).attr('kpobococ',1);
+  if(my_name == author) $(element).attr(my_name,1);
   timestamp = $('div.comment-meta:first a', element).text().trim();
   $(element).attr('timestamp',timestamp);
 }
@@ -82,6 +81,8 @@ $("body").css("cssText", "background-image: none !important;");
 
 //============================================================================================================================================    
 
+my_name = GM_getValue('dom2novosti_user_name', 'KPOBOCOC');
+	
 //<link rel="shortcut icon" href="http://dom2novosti.ru/wp-content/uploads/2016/11/favicon.ico" title="Favicon" /><!--[if IE]>    
 $('link[title="Favicon"]').attr("href","http://www.stackoverflow.com/favicon.ico");
     
@@ -96,7 +97,7 @@ $(".content").width("800");
 
 $("#main-nav").css("cssText", "background-color: black !important;");
 
-$("span.comment-author-link.cwp-author-link").filter( function(index) { return "KPOBOCOC" == $(this).text(); } ).css( "color", "red" );
+$("span.comment-author-link.cwp-author-link").filter( function(index) { return my_name == $(this).text(); } ).css( "color", "red" );
 
 $("img.attachment-tie-large.size-tie-large.wp-post-image").width(100);
 
@@ -178,7 +179,7 @@ $("cite").each(function( index )
 
     if(diffh >= 0 && diffh < gradient.length) {  $(this).css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
 
-    if("KPOBOCOC" == $(this).text())
+    if(my_name == $(this).text())
     {
       $(this).css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
     }
@@ -187,7 +188,7 @@ $("cite").each(function( index )
 });
 
 /**********
-my_messages = $("cite").filter( function(index) { return "KPOBOCOC" == $(this).text(); } );
+my_messages = $("cite").filter( function(index) { return my_name == $(this).text(); } );
 my_messages.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
 
 new_messages = $("cite").filter( function(index) { msg_date = add_date_time( $(this).next().text() ); return msg_date > last_msg; } );
