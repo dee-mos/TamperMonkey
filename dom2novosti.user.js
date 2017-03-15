@@ -6,9 +6,9 @@
 // @author       Dee
 // @match        http://*.dom2novosti.ru/*
 // @require      http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
-// @require      file://E:\DimusGreasemonkey\libs\datetime.js
-// @require      file://E:\DimusGreasemonkey\libs\dom.js
-// @require      file://E:\DimusGreasemonkey\libs\KolorWheel.min.js
+// @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/datetime.js
+// @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/dom.js
+// @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/KolorWheel.min.js
 // @require      file://E:\DimusGreasemonkey\3rd\tsl.js
 // @resource     animated_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animated.css
 // @resource     animation2_css  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animation2.css
