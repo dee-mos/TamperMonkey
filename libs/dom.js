@@ -1,3 +1,5 @@
+console.log('Loading script dom.js...');
+
 function insert_text_after(elem,text)
 {
   var newelem = document.createElement('p');
