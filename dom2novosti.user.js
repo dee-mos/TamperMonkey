@@ -138,7 +138,7 @@ $("a.more-link").each(function(index)
 				  if(datetime > last_msg) new_count++;
 			  });
 		  }
-		  if(new_count > 0) { this.counter_elem.text('Новых ' + new_count); } else { this.counter_elem.hide(); }
+		  if(new_count > 0) { this.counter_elem.text('zzzzzzzzzzzzzzzzz ' + new_count); } else { this.counter_elem.hide(); }
 	  }
 	}
   });
