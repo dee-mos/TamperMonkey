@@ -148,8 +148,6 @@ function process_page()
 
     });
 
-    my_name = GM_getValue('dom2novosti_user_name', 'KPOBOCOC');	
-    	
     // insert checkbox to hide/show articles    
     hdr = $('#theme-header');
     $('<input />', { type: 'checkbox', id: 'show_hide_articles', value: name }).appendTo(hdr);  
@@ -219,6 +217,8 @@ console.log('window.location.href = ' + window.location.href);
 // '/' or '/page/3/'
 is_root_page = (window.location.pathname == '/');
 is_page = is_root_page || (window.location.pathname.match(/^\/page\/\d+\/$/) !== null);
+
+my_name = GM_getValue('dom2novosti_user_name', 'KPOBOCOC');	
 
 GM_addStyle("div.header { display: none !important; }");
 GM_addStyle("::-webkit-scrollbar {width: 24px;height:8px;}");
