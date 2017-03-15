@@ -224,16 +224,16 @@ GM_addStyle(".new_messages_counter { border-radius: 10px; background: #ff0000; p
 if(is_root_page)
 {
   $.when(
-      get_page('http://dom2novosti.ru/page/2/'),
-	  get_page('http://dom2novosti.ru/page/3/'),
-	  get_page('http://dom2novosti.ru/page/4/'),
-	  get_page('http://dom2novosti.ru/page/5/')
+          get_page('http://dom2novosti.ru/page/2/'),
+          get_page('http://dom2novosti.ru/page/3/'),
+          get_page('http://dom2novosti.ru/page/4/'),
+          get_page('http://dom2novosti.ru/page/5/')
   ).done(function(a1, a2, a3, a4)
 	{
-	  get_articles(a1[0]).each(function(index) { $('article:last').after($(this)); } );
-	  get_articles(a2[0]).each(function(index) { $('article:last').after($(this)); } );
-	  get_articles(a3[0]).each(function(index) { $('article:last').after($(this)); } );
-	  get_articles(a4[0]).each(function(index) { $('article:last').after($(this)); } );
+	  get_articles( a1[0]).each(function(index) { $('article:last').after($(this)); } );
+	  get_articles( a2[0]).each(function(index) { $('article:last').after($(this)); } );
+	  get_articles( a3[0]).each(function(index) { $('article:last').after($(this)); } );
+	  get_articles( a4[0]).each(function(index) { $('article:last').after($(this)); } );
 
 	  //posting = $("#main-content > div.content-wrap > div > div.post-listing");
 	  //posting.hide();
