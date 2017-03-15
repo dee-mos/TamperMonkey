@@ -163,7 +163,8 @@ function process_page()
 
     maxDate = new Date(1500,1,1);
 
-    var gradient = make_gradient('#2FD9FB', '#FAD1D1', 10);
+    gradient_steps = 12;	
+    var gradient = make_gradient('#2FD9FB', '#FAD1D1', gradient_steps);
 
     comments = $('div#comments li');
     comments.each(set_comment_attributes);
@@ -171,8 +172,7 @@ function process_page()
     $("cite").each(function( index )
     {
         cur_msg_datetime = dt.str2datetime($(this).next().text());
-        diff = (Date.now() - cur_msg_datetime) / (1000 * 60 * 60); // in hours
-        diffh = Math.trunc(diff);
+        diffh = Math.trunc( (Date.now() - cur_msg_datetime) / (1000 * 60 * 60) ); // in hours
 
         msg_date = add_date_time( $(this).next().text() );
 
