@@ -10,8 +10,8 @@
 // @require      file://E:\DimusGreasemonkey\libs\dom.js
 // @require      file://E:\DimusGreasemonkey\libs\KolorWheel.min.js
 // @require      file://E:\DimusGreasemonkey\3rd\tsl.js
-// @resource     animated_css  file://E:\DimusGreasemonkey\css\animated.css
-// @resource     animation2_css  file://E:\DimusGreasemonkey\css\animation2.css
+// @resource     animated_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animated.css
+// @resource     animation2_css  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animation2.css
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
