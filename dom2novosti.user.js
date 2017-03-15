@@ -9,6 +9,7 @@
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/datetime.js
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/dom.js
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/KolorWheel.min.js
+// @resource     controls_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/controls.css
 // @resource     animated_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animated.css
 // @resource     animation2_css  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animation2.css
 // @grant        GM_addStyle
@@ -150,7 +151,7 @@ function process_page()
 
     // insert checkbox to hide/show articles    
     hdr = $('#theme-header');
-    $('<input />', { type: 'checkbox', id: 'show_hide_articles', value: name }).appendTo(hdr);  
+    $('<input />', { type: 'checkbox', id: 'show_hide_articles', class: 'gcheckbox', value: name }).appendTo(hdr);  
     $('<label />', { 'for': 'show_hide_articles', text: 'Show/Hide articles' }).appendTo(hdr);    
         
     post_id = get_post_id();
@@ -225,6 +226,7 @@ GM_addStyle("::-webkit-scrollbar {width: 24px;height:8px;}");
 
 GM_addStyle( GM_getResourceText ("animated_css") );
 GM_addStyle( GM_getResourceText ("animation2_css") );
+GM_addStyle( GM_getResourceText ("controls_css") );
 GM_addStyle(".new_messages_counter { border-radius: 10px; background: #ff0000; padding: 2px; color: #ffffff; }");
 
 if(is_root_page)
