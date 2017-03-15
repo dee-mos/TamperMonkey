@@ -98,7 +98,13 @@ function process_page()
     $("img.attachment-tie-large.size-tie-large.wp-post-image").width(100);
 
     $('article a.more-link').hide();
-        
+
+    last_menu_item = $('#menu-glavnoe li:last');
+    settings_menu_item = last_menu_item.clone();
+    settings_menu_item.id = 'settings_menu_item';
+    settings_menu_item.find('a').text('Настройки').attr('href','');
+    last_menu_item.after( settings_menu_item );
+
     // hide text of article    
     $('article div.entry').hide();
 
