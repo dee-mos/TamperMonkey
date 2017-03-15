@@ -1,0 +1,76 @@
+/*
+   in HTML:  <div class="dot"></div>
+*/
+
+/*
+body {
+  padding: 50px;
+  background: url("https://farm9.staticflickr.com/8430/7880627828_cc06e25c4e_b.jpg") fixed no-repeat;
+}
+*/
+.dot {
+/*  position: absolute;
+  top: 250px;
+  left: 250px; */
+  background: #00C0FF;
+  box-shadow: 1px 0 2px 0 rgba(0, 0, 0, .5);
+  height: 0;
+  width: 0;
+  padding: 4px;
+  border-radius: 5000px;
+  
+  &:before,
+  &:after {
+    position: absolute;
+    content: " ";
+    border-radius: inherit;
+    height: 0px;
+    width: 0px;
+    box-shadow: 0 0 2px 2px #FF0000;
+    
+    transform: translate(-50%, -50%);
+    animation: pulseInner 2s infinite ease-out;
+  }
+  
+  &:after {
+    height: 7px;
+    width: 7px;
+    box-shadow: 0 0 4px 2px #FFFF00;
+    animation: pulseOuter 2s infinite ease-out;
+  }
+  
+}
+
+@keyframes pulseInner {
+  0% {
+    height: 0;
+    width: 0;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1
+  }
+  95% {
+    height: 125px;
+    width: 125px;
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes pulseOuter {
+  0% {
+    height: 7px;
+    width: 7px;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1
+  }
+  100% {
+    height: 250px;
+    width: 250px;
+    opacity: 0.25;
+  }
+}

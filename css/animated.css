@@ -1,0 +1,14 @@
+.animation_01 {
+    animation-name: animation_01;
+    animation-duration: 200ms;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes animation_01 {
+   from {border-radius: 0px;}
+   to   {border-radius: 30px;}
+
+}
+
+
