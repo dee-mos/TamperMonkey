@@ -79,10 +79,6 @@ function process_page()
 {
 $("body").css("cssText", "background-image: none !important;");
 
-//============================================================================================================================================    
-
-my_name = GM_getValue('dom2novosti_user_name', 'KPOBOCOC');
-	
 //<link rel="shortcut icon" href="http://dom2novosti.ru/wp-content/uploads/2016/11/favicon.ico" title="Favicon" /><!--[if IE]>    
 $('link[title="Favicon"]').attr("href","http://www.stackoverflow.com/favicon.ico");
     
@@ -146,6 +142,10 @@ $("a.more-link").each(function(index)
 
 });
 
+//============================================================================================================================================    
+
+my_name = GM_getValue('dom2novosti_user_name', 'KPOBOCOC');	
+	
 // insert checkbox to hide/show articles    
 hdr = $('#theme-header');
 $('<input />', { type: 'checkbox', id: 'show_hide_articles', value: name }).appendTo(hdr);  
