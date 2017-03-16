@@ -107,7 +107,7 @@ function process_page()
     last_menu_item.after( settings_menu_item );
 
     // hide text of article    
-    $('article div.entry').hide();
+    if(!is_root_page) $('article div.entry').hide();
 
     hdr = $('#theme-header');
         
@@ -202,7 +202,9 @@ function process_page()
 
     GM_setValue(post_id, max_date_str);
 
-    document.body.onmousedown = null;
+    document.body.onmousedown = undefined;
+    document.body.onselectstart = undefined;
+	
     $('body').show();
 
 } // function process_page()
