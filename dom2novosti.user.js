@@ -202,6 +202,7 @@ function process_page()
 
     GM_setValue(post_id, max_date_str);
 
+    document.body.onmousedown = null;
     $('body').show();
 
 } // function process_page()
