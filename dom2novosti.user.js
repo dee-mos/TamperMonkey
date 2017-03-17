@@ -114,17 +114,23 @@ function process_page()
     $('<input />', { type: 'checkbox', id: 'show_hide_entry', class: 'trigger_show_entry' }).appendTo(hdr);  
     $('<label />', { text: 'Show/Hide' }).appendTo(hdr);    
     $('#show_hide_entry').click(function() { $('article div.entry').toggle(); });     
-        
-    $("a.more-link").each(function(index)
+    
+    
+	
+	
+	
+    $("article > h2 > a").each(function(index)
     {
+        // minimize main page
+	messages_count = $(this).find('span.post-comments').text();
+	$(this).find('span').remove();
+        $(this).find('div.post-thumbnail').append( $(this).find('h2') );
+	    
     	//console.log($(this).prop('href'));
-        last_span = $(this).closest('article').find('span:last');
-    	new_span = last_span.clone().addClass('new_messages_counter').text('');
-    	last_span.after(new_span);
-
+	article = $(this).closest('article');    
         $.ajax({
           url: $(this).prop('href'),
-    	  counter_elem: new_span,
+    	  article_elem: article,
           success: function( data )
         {
     	  new_count = 0;
@@ -142,13 +148,12 @@ function process_page()
     				  if(datetime > last_msg) new_count++;
     			  });
     		  }
-    		  if(new_count > 0) { this.counter_elem.text('Новых: ' + new_count); } else { this.counter_elem.hide(); }
+		  this.article.attr('new_messages',new_count);
     	  }
     	}
       });
-
     });
-
+	
     // insert checkbox to hide/show articles    
     hdr = $('#theme-header');
     $('<input />', { type: 'checkbox', id: 'show_hide_articles', class: 'gcheckbox', value: name }).appendTo(hdr);  
