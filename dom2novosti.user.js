@@ -190,14 +190,6 @@ function process_page()
         if(msg_date > last_msg)  { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); }
     });
 
-    /**********
-    my_messages = $("cite").filter( function(index) { return my_name == $(this).text(); } );
-    my_messages.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
-
-    new_messages = $("cite").filter( function(index) { msg_date = add_date_time( $(this).next().text() ); return msg_date > last_msg; } );
-    new_messages.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#fdff8d" );
-    ***********/
-
     max_date_str = dt.strftime('%d.%m.%Y at %H:%M',maxDate);
 
     GM_setValue(post_id, max_date_str);
@@ -245,19 +237,6 @@ if(is_root_page)
 	  get_articles( a2[0]).each(function(index) { $('article:last').after($(this)); } );
 	  get_articles( a3[0]).each(function(index) { $('article:last').after($(this)); } );
 	  get_articles( a4[0]).each(function(index) { $('article:last').after($(this)); } );
-
-	  //posting = $("#main-content > div.content-wrap > div > div.post-listing");
-	  //posting.hide();
-      /*
-	  articles.each(function(index)
-	  {
-		art_title = $('h2:first', $(this));
-		$(this).find('.more-link').remove();
-
-		posting.after($(this));
-
-	  });
-	  */
 
 	  process_page();
 	});
