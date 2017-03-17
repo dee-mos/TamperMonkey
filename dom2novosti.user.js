@@ -89,7 +89,9 @@ function process_page()
     $("#theme-header > div").remove();
     $("footer").remove();
     $("div.footer-bottom").remove();
-
+	
+    $('.item-list').css('padding','0 0');
+	
     $(".content").width("800");
 
     $("#main-nav").css("cssText", "background-color: black !important;");
@@ -115,22 +117,17 @@ function process_page()
     $('<label />', { text: 'Show/Hide' }).appendTo(hdr);    
     $('#show_hide_entry').click(function() { $('article div.entry').toggle(); });     
     
-    
-	
-	
-	
-    $("article > h2 > a").each(function(index)
+    $("article").each(function(index)
     {
         // minimize main page
 	messages_count = $(this).find('span.post-comments').text();
 	$(this).find('span').remove();
-        $(this).find('div.post-thumbnail').append( $(this).find('h2') );
+        $(this).find("div.entry").before($(this).find('h2'));
 	    
     	//console.log($(this).prop('href'));
-	article = $(this).closest('article');    
         $.ajax({
-          url: $(this).prop('href'),
-    	  article_elem: article,
+          url: $(this).find('h2 > a').prop('href'),
+    	  article_elem: $(this),
           success: function( data )
         {
     	  new_count = 0;
@@ -148,7 +145,7 @@ function process_page()
     				  if(datetime > last_msg) new_count++;
     			  });
     		  }
-		  this.article.attr('new_messages',new_count);
+		  $(this).attr('new_messages',new_count);
     	  }
     	}
       });
