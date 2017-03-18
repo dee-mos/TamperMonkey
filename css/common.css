@@ -1,0 +1,20 @@
+.mouseImageZoomOver {
+        display: inline;
+        position: relative;
+    }
+    
+.mouseImageZoomOver img {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        bottom: 1em;
+        opacity: 0;
+        pointer-events: none;
+        transition-duration: 800ms;    
+    }
+    
+.mouseImageZoomOver:hover img {
+        opacity: 1;
+        transition-duration: 400ms;
+    }
+

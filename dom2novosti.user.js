@@ -12,6 +12,7 @@
 // @resource     controls_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/controls.css
 // @resource     animated_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animated.css
 // @resource     animation2_css  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animation2.css
+// @resource     common_css      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/common.css
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -126,6 +127,9 @@ function process_page()
 	$(this).find('p.post-meta').remove();    
         $(this).find("div.entry").before($(this).find('h2'));
 	    
+	// make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
+        $(this).find('img').wrap('<span class="mouseImageZoomOver"></span>');
+
     	//console.log($(this).prop('href'));
         $.ajax({
           url: $(this).find('h2 > a').prop('href'),
@@ -148,7 +152,7 @@ function process_page()
     			  });
     		  }
 		  $(this).attr('new_messages',new_count);
-		  if(new_count > 0) { this.article_elem.css('background-color','#c4ffeb'); } else { this.article_elem.css('background-color',''); } 
+		  if(new_count > 0) { this.article_elem.css('background-color','#c4ffeb'); } 
     	  }
     	}
       });
@@ -227,6 +231,8 @@ GM_addStyle("::-webkit-scrollbar {width: 24px;height:8px;}");
 GM_addStyle( GM_getResourceText ("animated_css") );
 GM_addStyle( GM_getResourceText ("animation2_css") );
 GM_addStyle( GM_getResourceText ("controls_css") );
+GM_addStyle( GM_getResourceText ("common_css") );
+
 GM_addStyle(".new_messages_counter { border-radius: 10px; background: #ff0000; padding: 2px; color: #ffffff; }");
 
 if(is_root_page)
@@ -247,6 +253,6 @@ if(is_root_page)
 	});
 }
 else
-	process_page();
+    process_page();
 
 
