@@ -121,6 +121,7 @@ function process_page()
     {
         // minimize main page
 	messages_count = $(this).find('span.post-comments').text();
+	$(this).css('margin-bottom','2px');    
 	$(this).find('span').remove();
 	$(this).find('p.post-meta').remove();    
         $(this).find("div.entry").before($(this).find('h2'));
