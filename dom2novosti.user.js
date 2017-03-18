@@ -12,6 +12,7 @@
 // @resource     controls_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/controls.css
 // @resource     animated_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animated.css
 // @resource     animation2_css  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animation2.css
+// @resource     common_css      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/common.css
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -89,7 +90,9 @@ function process_page()
     $("#theme-header > div").remove();
     $("footer").remove();
     $("div.footer-bottom").remove();
-
+	
+    $('.item-list').css('padding','0 0');
+	
     $(".content").width("800");
 
     $("#main-nav").css("cssText", "background-color: black !important;");
@@ -114,17 +117,23 @@ function process_page()
     $('<input />', { type: 'checkbox', id: 'show_hide_entry', class: 'trigger_show_entry' }).appendTo(hdr);  
     $('<label />', { text: 'Show/Hide' }).appendTo(hdr);    
     $('#show_hide_entry').click(function() { $('article div.entry').toggle(); });     
-        
-    $("a.more-link").each(function(index)
+    
+    $("article").each(function(index)
     {
-    	//console.log($(this).prop('href'));
-        last_span = $(this).closest('article').find('span:last');
-    	new_span = last_span.clone().addClass('new_messages_counter').text('');
-    	last_span.after(new_span);
+        // minimize main page
+	messages_count = $(this).find('span.post-comments').text();
+	$(this).css('margin-bottom','2px');    
+	$(this).find('span').remove();
+	$(this).find('p.post-meta').remove();    
+        $(this).find("div.entry").before($(this).find('h2'));
+	    
+	// make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
+        $(this).find('img').wrap('<span class="mouseImageZoomOver"></span>');
 
+    	//console.log($(this).prop('href'));
         $.ajax({
-          url: $(this).prop('href'),
-    	  counter_elem: new_span,
+          url: $(this).find('h2 > a').prop('href'),
+    	  article_elem: $(this),
           success: function( data )
         {
     	  new_count = 0;
@@ -142,13 +151,13 @@ function process_page()
     				  if(datetime > last_msg) new_count++;
     			  });
     		  }
-    		  if(new_count > 0) { this.counter_elem.text('Новых: ' + new_count); } else { this.counter_elem.hide(); }
+		  $(this).attr('new_messages',new_count);
+		  if(new_count > 0) { this.article_elem.css('background-color','#c4ffeb'); } 
     	  }
     	}
       });
-
     });
-
+	
     // insert checkbox to hide/show articles    
     hdr = $('#theme-header');
     $('<input />', { type: 'checkbox', id: 'show_hide_articles', class: 'gcheckbox', value: name }).appendTo(hdr);  
@@ -222,6 +231,8 @@ GM_addStyle("::-webkit-scrollbar {width: 24px;height:8px;}");
 GM_addStyle( GM_getResourceText ("animated_css") );
 GM_addStyle( GM_getResourceText ("animation2_css") );
 GM_addStyle( GM_getResourceText ("controls_css") );
+GM_addStyle( GM_getResourceText ("common_css") );
+
 GM_addStyle(".new_messages_counter { border-radius: 10px; background: #ff0000; padding: 2px; color: #ffffff; }");
 
 if(is_root_page)
@@ -242,6 +253,6 @@ if(is_root_page)
 	});
 }
 else
-	process_page();
+    process_page();
 
 
