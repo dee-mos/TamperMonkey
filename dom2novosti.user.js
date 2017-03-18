@@ -122,6 +122,7 @@ function process_page()
         // minimize main page
 	messages_count = $(this).find('span.post-comments').text();
 	$(this).find('span').remove();
+	$(this).find('p.post-meta').remove();    
         $(this).find("div.entry").before($(this).find('h2'));
 	    
     	//console.log($(this).prop('href'));
@@ -146,6 +147,7 @@ function process_page()
     			  });
     		  }
 		  $(this).attr('new_messages',new_count);
+		  if(new_count > 0) { this.article_elem.css('background-color','#c4ffeb'); } else { this.article_elem.css('background-color',''); } 
     	  }
     	}
       });
