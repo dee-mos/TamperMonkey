@@ -130,21 +130,48 @@ function process_page()
 
     $('.post-title').addClass('post-title-new').removeClass('post-title');
 
+/*
     last_menu_item = $('#menu-glavnoe li:last');
     settings_menu_item = last_menu_item.clone();
     settings_menu_item.id = 'settings_menu_item';
     settings_menu_item.find('a').text('Настройки').attr('href','http://dom2novosti.ru/?compact=0');
     last_menu_item.after( settings_menu_item );
+*/
+    $('#theme-header').remove();
+
+/*
+<button class="btn_MenuUp">Slide up</button>\
+<button class="btn_MenuDown">Slide down</button>\
+    $(".btn_MenuDown").click( function() { $(".TopMenuBody").slideDown(); } );
+    $(".btn_MenuUp").click( function() { $(".TopMenuBody").slideUp(); } );
+*/
+
+    // new form on top
+    hdr = $('div.wrapper > div.container');
+    hdr.prepend(
+      $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
+      $('<input />', { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
+      $('<label />', { 'for': 'show_hide_articles', text: 'Show/Hide articles' }),
+      $('<input />', { type: 'text', id: 'cfg_my_name', class: 'ginput', value: name }),
+      $('<button />', { class: 'btn_menu_ok', text: 'OK' })
+    );    
+
+    GM_addStyle(".ginput { all: initial; * { all: unset; } }" );
+
+    $('#cfg_my_name').val(my_name);
+    $('#cfg_show_hide_articles').click(function() { $('article div.entry').toggle(); });     
+    $(".btn_menu_ok").click( function() { GM_setValue('dom2novosti_user_name',$('#cfg_my_name').val() ); } );
 
     // hide text of article    
     if(!is_root_page) $('article div.entry').hide();
 
+/*
     hdr = $('#theme-header');
         
     $('<input />', { type: 'checkbox', id: 'show_hide_entry', class: 'trigger_show_entry' }).appendTo(hdr);  
     $('<label />', { text: 'Show/Hide' }).appendTo(hdr);    
     $('#show_hide_entry').click(function() { $('article div.entry').toggle(); });     
-    
+*/    
     $("article").each(function(index)
     {
         // minimize main page
@@ -257,7 +284,8 @@ if( $.getUrlParam('compact') == '0' )
 is_root_page = (window.location.pathname == '/');
 is_page = is_root_page || (window.location.pathname.match(/^\/page\/\d+\/$/) !== null);
 
-my_name = GM_getValue('dom2novosti_user_name', 'KPOBOCOC');	
+my_name = GM_getValue('dom2novosti_user_name');
+console.log('My name = ' + my_name);
 
 GM_addStyle("div.header { display: none !important; }");
 GM_addStyle("::-webkit-scrollbar {width: 24px;height:8px;}");
