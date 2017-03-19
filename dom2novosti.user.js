@@ -22,6 +22,31 @@
 
 //debugger;
 
+$.getUrlParam = function(param)
+{
+  var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
+  if (results!=null && results[1]) 
+  {
+    return decodeURIComponent(results[1]);
+  }
+  return null;
+}
+
+if (typeof jQuery.when.all === 'undefined') 
+{
+    jQuery.when.all = function (deferreds) {
+        return $.Deferred(function (def) {
+            $.when.apply(jQuery, deferreds).then(
+                function () {
+                    def.resolveWith(this, [Array.prototype.slice.call(arguments)]);
+                },
+                function () {
+                    def.rejectWith(this, [Array.prototype.slice.call(arguments)]);
+                });
+        });
+    }
+}
+
 function add_date_time(datetimestring)
 {
   var dateObject = dt.str2datetime(datetimestring);
@@ -103,10 +128,12 @@ function process_page()
 
     $('article a.more-link').hide();
 
+    $('.post-title').addClass('post-title-new').removeClass('post-title');
+
     last_menu_item = $('#menu-glavnoe li:last');
     settings_menu_item = last_menu_item.clone();
     settings_menu_item.id = 'settings_menu_item';
-    settings_menu_item.find('a').text('Настройки').attr('href','');
+    settings_menu_item.find('a').text('Настройки').attr('href','http://dom2novosti.ru/?compact=0');
     last_menu_item.after( settings_menu_item );
 
     // hide text of article    
@@ -128,7 +155,8 @@ function process_page()
         $(this).find("div.entry").before($(this).find('h2'));
 	    
 	// make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
-        $(this).find('img').wrap('<span class="mouseImageZoomOver"></span>');
+        //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
+        $(this).css('background-color','#cccccc');
 
     	//console.log($(this).prop('href'));
         $.ajax({
@@ -152,7 +180,7 @@ function process_page()
     			  });
     		  }
 		  $(this).attr('new_messages',new_count);
-		  if(new_count > 0) { this.article_elem.css('background-color','#c4ffeb'); } 
+		  if(new_count > 0) { this.article_elem.css('background-color','#c4ffeb'); } else { this.article_elem.css('background-color',''); } 
     	  }
     	}
       });
@@ -219,6 +247,12 @@ function process_page()
 console.log('window.location.pathname = ' + window.location.pathname);
 console.log('window.location.href = ' + window.location.href);
 
+if( $.getUrlParam('compact') == '0' )
+{
+	$('body').show();
+	return;
+}	
+
 // '/' or '/page/3/'
 is_root_page = (window.location.pathname == '/');
 is_page = is_root_page || (window.location.pathname.match(/^\/page\/\d+\/$/) !== null);
@@ -234,25 +268,23 @@ GM_addStyle( GM_getResourceText ("controls_css") );
 GM_addStyle( GM_getResourceText ("common_css") );
 
 GM_addStyle(".new_messages_counter { border-radius: 10px; background: #ff0000; padding: 2px; color: #ffffff; }");
+GM_addStyle(".post-title-new { font-size: 16px; font-weight: bold; }" );
 
 if(is_root_page)
 {
-  $.when(
-          get_page('http://dom2novosti.ru/page/2/'),
-          get_page('http://dom2novosti.ru/page/3/'),
-          get_page('http://dom2novosti.ru/page/4/'),
-          get_page('http://dom2novosti.ru/page/5/')
-  ).done(function(a1, a2, a3, a4)
-	{
-	  get_articles( a1[0]).each(function(index) { $('article:last').after($(this)); } );
-	  get_articles( a2[0]).each(function(index) { $('article:last').after($(this)); } );
-	  get_articles( a3[0]).each(function(index) { $('article:last').after($(this)); } );
-	  get_articles( a4[0]).each(function(index) { $('article:last').after($(this)); } );
+  var page_loaders = [];
 
-	  process_page();
-	});
+  root_pages_count = 5;
+  root_page_template = 'http://dom2novosti.ru/page/';
+
+  for (p = 2; p <= root_pages_count; p++) { page_loaders.push( get_page(root_page_template + p) ); }
+
+  $.when.all( page_loaders ).then( function(objects) 
+  {
+    for(t in objects) { get_articles( objects[t][0]).each(function(index) { $('article:last').after($(this)); } ); }
+    process_page();
+  });
 }
 else
     process_page();
-
 
