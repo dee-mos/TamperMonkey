@@ -207,6 +207,7 @@ function process_page()
     				  if(datetime > last_msg) {
 					  new_count++;
 					  if(datetime - last_msg > min_diff) min_diff := datetime - last_msg;
+				  }
     			  });
     		  }
 		  $(this).attr('new_messages',new_count);
