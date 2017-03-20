@@ -176,7 +176,7 @@ function process_page()
     {
         // minimize main page
 	messages_count = $(this).find('span.post-comments').text();
-	$(this).css('margin-bottom','2px');    
+	$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
 	$(this).find('span').remove();
 	$(this).find('p.post-meta').remove();    
         $(this).find("div.entry").before($(this).find('h2'));
@@ -207,7 +207,14 @@ function process_page()
     			  });
     		  }
 		  $(this).attr('new_messages',new_count);
-		  if(new_count > 0) { this.article_elem.css('background-color','#c4ffeb'); } else { this.article_elem.css('background-color',''); } 
+		  if(new_count > 0) { 
+			this.article_elem.css('background-color','#c4ffeb'); 
+			this.article_elem.prepend(
+				$('<div />', { style: 'float: right; background-color: #9fe1ff; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px;', text: '57' } )
+			);
+		  } else { 
+			this.article_elem.css('background-color','');
+		  } 
     	  }
     	}
       });
