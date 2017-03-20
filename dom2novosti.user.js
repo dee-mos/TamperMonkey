@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name         dom2novosti
 // @namespace    DeeTamper
 // @version      0.1
@@ -191,8 +191,8 @@ function process_page()
     	  article_elem: $(this),
           success: function( data )
         {
-    	  new_count = 0;
-	  min_diff = 0;	
+          new_count = 0;
+          min_diff = 0;	
           if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
     	  {
     		  post_id = RegExp.$1;
@@ -204,10 +204,14 @@ function process_page()
     			  comments.each(function(index)
     			  {
     				  datetime = dt.str2datetime( $(this).attr('timestamp') );
-    				  if(datetime > last_msg) {
-					  new_count++;
-					  if(datetime - last_msg > min_diff) min_diff := datetime - last_msg;
-				  }
+    				  if(datetime > last_msg) 
+                      {
+					    new_count++;
+					    if(datetime - last_msg > min_diff) 
+                        {
+                            min_diff = datetime - last_msg;
+                        }
+				      }
     			  });
     		  }
 		  $(this).attr('new_messages',new_count);
@@ -216,7 +220,7 @@ function process_page()
 			this.article_elem.attr('new_msg_count', new_count);      
 			this.article_elem.attr('min_time_diff', min_diff);
 			this.article_elem.prepend(
-				$('<div />', { style: 'float: right; background-color: #9fe1ff; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px;'} ).text(new_count)
+				$('<div />', { style: 'float: right; background-color: #9fe1ff; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
 			);
 		  } else { 
 			this.article_elem.css('background-color','');
