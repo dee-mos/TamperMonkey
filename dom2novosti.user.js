@@ -214,14 +214,15 @@ function process_page()
 		  if(new_count > 0) { 
 			this.article_elem.css('background-color','#c4ffeb'); 
 			this.article_elem.attr('new_msg_count', new_count);      
-			this.article_elem.attr('min_time_diff', min_diff);    
+			this.article_elem.attr('min_time_diff', min_diff);
 			this.article_elem.prepend(
-				$('<div />', { style: 'float: right; background-color: #9fe1ff; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px;', text: '57' } )
+				$('<div />', { style: 'float: right; background-color: #9fe1ff; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px;'} ).text(new_count)
 			);
 		  } else { 
 			this.article_elem.css('background-color','');
 		  } 
-    	  }
+              
+    	  } // if( data.match
     	} // success
       });
     });
