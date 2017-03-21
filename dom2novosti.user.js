@@ -83,11 +83,11 @@ function make_gradient(start, end, steps)
   return res;
 }
 
-function set_comment_attributes(indx, element)
+function set_comment_attributes(index, element)
 {
   author = $('cite:first', element).text().trim();
   $(element).attr('author',author);
-  if(my_name == author) $(element).attr(my_name,1);
+  if(my_name == author) $(element).attr('my_name',1);
   timestamp = $('div.comment-meta:first a', element).text().trim();
   $(element).attr('timestamp',timestamp);
 }
@@ -115,6 +115,7 @@ function process_page()
     $("#theme-header > div").remove();
     $("footer").remove();
     $("div.footer-bottom").remove();
+    $("div.post-navigation").remove();
 	
     $('.item-list').css('padding','0 0');
 	
@@ -134,7 +135,7 @@ function process_page()
     last_menu_item = $('#menu-glavnoe li:last');
     settings_menu_item = last_menu_item.clone();
     settings_menu_item.id = 'settings_menu_item';
-    settings_menu_item.find('a').text('–ù–∞—Å—Ç—Ä–æ–π–∫–∏').attr('href','http://dom2novosti.ru/?compact=0');
+    settings_menu_item.find('a').text('Õ‡ÒÚÓÈÍË').attr('href','http://dom2novosti.ru/?compact=0');
     last_menu_item.after( settings_menu_item );
 */
     $('#theme-header').remove();
@@ -149,7 +150,7 @@ function process_page()
     // new form on top
     hdr = $('div.wrapper > div.container');
     hdr.prepend(
-      $('<a />',     { href: 'http://dom2novosti.ru/', text: '–ì–ª–∞–≤–Ω–∞—è' }),
+      $('<a />',     { href: 'http://dom2novosti.ru/', text: '√Î‡‚Ì‡ˇ' }),
       $('<input />', { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
       $('<label />', { 'for': 'show_hide_articles', text: 'Show/Hide articles' }),
       $('<input />', { type: 'text', id: 'cfg_my_name', class: 'ginput', value: name }),
@@ -207,7 +208,7 @@ function process_page()
     				  if(datetime > last_msg) 
                       {
 					    new_count++;
-					    if(datetime - last_msg > min_diff) 
+					    if(datetime - last_msg < min_diff) 
                         {
                             min_diff = datetime - last_msg;
                         }
@@ -250,27 +251,34 @@ function process_page()
     comments = $('div#comments li');
     comments.each(set_comment_attributes);
 
-    $("cite").each(function( index )
+	$('.commentlist .children').css('margin-top', '0');
+	
+    $('div#comments li').each(function(index)
     {
-        cur_msg_datetime = dt.str2datetime($(this).next().text());
-        diffh = Math.trunc( (Date.now() - cur_msg_datetime) / (1000 * 60 * 60) ); // in hours
+		set_comment_attributes(index, this);
 
-        msg_date = add_date_time( $(this).next().text() );
+		$(this).css('margin-bottom', '4px');
 
-        elem_li = $(this).closest( "li" );
-        elem_ava = elem_li.find('div.comment-avatar');
+		cite_elem = $('cite:first', $(this));
+		timestamp = $(this).attr('timestamp');
+		author = $(this).attr('author');
+        diffh = Math.trunc( (Date.now() - dt.str2datetime(timestamp)) / (1000 * 60 * 60) ); // in hours
+        msg_date = add_date_time( timestamp ); // updates maxDate
 
-    	elem_ava.after(	$("<div class='dot'></div>") );
+        elem_ava = $(this).find('div.comment-avatar');
 
-        if(diffh >= 0 && diffh < gradient.length) {  $(this).css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
+        if(diffh >= 0 && diffh < gradient.length) {  cite_elem.css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
 
-        if(my_name == $(this).text())
+        if(my_name == author)
         {
-          $(this).css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
+          cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
         }
 
-        if(msg_date > last_msg)  { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); }
+        if(msg_date > last_msg) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
     });
+	
+	$('ul.children').css('background-color', '');
+	$('div#comments li').css('background-color', '');
 
     max_date_str = dt.strftime('%d.%m.%Y at %H:%M',maxDate);
 
