@@ -135,7 +135,7 @@ function process_page()
     last_menu_item = $('#menu-glavnoe li:last');
     settings_menu_item = last_menu_item.clone();
     settings_menu_item.id = 'settings_menu_item';
-    settings_menu_item.find('a').text('Õ‡ÒÚÓÈÍË').attr('href','http://dom2novosti.ru/?compact=0');
+    settings_menu_item.find('a').text('–ù–∞—Å—Ç—Ä–æ–π–∫–∏').attr('href','http://dom2novosti.ru/?compact=0');
     last_menu_item.after( settings_menu_item );
 */
     $('#theme-header').remove();
@@ -148,20 +148,24 @@ function process_page()
 */
 
     // new form on top
-    hdr = $('div.wrapper > div.container');
+    hdr = $('div.wrapper > div.container').prepend( 
+      $('<div />',    { class: 'd2topmenu', id: 'options_form' } );
     hdr.prepend(
-      $('<a />',     { href: 'http://dom2novosti.ru/', text: '√Î‡‚Ì‡ˇ' }),
-      $('<input />', { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
-      $('<label />', { 'for': 'show_hide_articles', text: 'Show/Hide articles' }),
-      $('<input />', { type: 'text', id: 'cfg_my_name', class: 'ginput', value: name }),
-      $('<button />', { class: 'btn_menu_ok', text: 'OK' })
+      $('<a />',     { href: 'http://dom2novosti.ru/', text: '–ì–ª–∞–≤–Ω–∞—è' }),
+      $('<span />'),
+      $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
+      $('<label />',  { text: 'Show/Hide articles' }),
+      $('<span />'),
+      $('<label />',  { text: 'Name:' }),
+      $('<input />',  { type: 'text', id: 'cfg_my_name', value: name }),
+      $('<button />', { id: 'btn_menu_ok', text: 'OK' })
     );    
 
     GM_addStyle(".ginput { all: initial; * { all: unset; } }" );
 
     $('#cfg_my_name').val(my_name);
     $('#cfg_show_hide_articles').click(function() { $('article div.entry').toggle(); });     
-    $(".btn_menu_ok").click( function() { GM_setValue('dom2novosti_user_name',$('#cfg_my_name').val() ); } );
+    $("#btn_menu_ok").click( function() { GM_setValue('dom2novosti_user_name',$('#cfg_my_name').val() ); } );
 
     // hide text of article    
     if(!is_root_page) $('article div.entry').hide();
@@ -266,9 +270,7 @@ function process_page()
         msg_date = add_date_time( timestamp ); // updates maxDate
 
         elem_ava = $(this).find('div.comment-avatar');
-
         if(diffh >= 0 && diffh < gradient.length) {  cite_elem.css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
-
         if(my_name == author)
         {
           cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
