@@ -149,7 +149,7 @@ function process_page()
 
     // new form on top
     hdr = $('div.wrapper > div.container').prepend( 
-      $('<div />',    { class: 'd2topmenu', id: 'options_form' } );
+      $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
     hdr.prepend(
       $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
       $('<span />'),
