@@ -264,8 +264,6 @@ function process_page()
         elem_li = $(this).closest( "li" );
         elem_ava = elem_li.find('div.comment-avatar');
 
-    	elem_ava.after(	$("<div class='dot'></div>") );
-
         if(diffh >= 0 && diffh < gradient.length) {  $(this).css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
 
         if(my_name == $(this).text())
