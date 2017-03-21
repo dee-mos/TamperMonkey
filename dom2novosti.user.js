@@ -150,7 +150,7 @@ function process_page()
     // new form on top
     hdr = $('div.wrapper > div.container').prepend( 
       $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
-    hdr.prepend(
+    $('#options_form').prepend(
       $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
       $('<span />'),
       $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
