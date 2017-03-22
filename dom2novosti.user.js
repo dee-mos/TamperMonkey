@@ -131,6 +131,8 @@ function process_page()
 
     $('.post-title').addClass('post-title-new').removeClass('post-title');
 
+    $('.comment-avatar').css( {'width' : '20px', 'height':'20px'});
+
 /*
     last_menu_item = $('#menu-glavnoe li:last');
     settings_menu_item = last_menu_item.clone();
@@ -149,8 +151,8 @@ function process_page()
 
     // new form on top
     hdr = $('div.wrapper > div.container').prepend( 
-      $('<div />',    { class: 'd2topmenu', id: 'options_form' } );
-    hdr.prepend(
+      $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
+    $('#options_form').prepend(
       $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
       $('<span />'),
       $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
@@ -198,6 +200,7 @@ function process_page()
         {
           new_count = 0;
           min_diff = 0;	
+	  has_my_name = 0;
           if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
     	  {
     		  post_id = RegExp.$1;
@@ -225,7 +228,7 @@ function process_page()
 			this.article_elem.attr('new_msg_count', new_count);      
 			this.article_elem.attr('min_time_diff', min_diff);
 			this.article_elem.prepend(
-				$('<div />', { style: 'float: right; background-color: #9fe1ff; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
+			$('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
 			);
 		  } else { 
 			this.article_elem.css('background-color','');
@@ -276,7 +279,7 @@ function process_page()
           cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
         }
 
-        if(msg_date > last_msg) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
+        if( 1/*msg_date > last_msg*/) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
     });
 	
 	$('ul.children').css('background-color', '');
