@@ -6,8 +6,8 @@
 }
 
 @keyframes animation_01 {
-   from {border-radius: 0px;}
-   to   {border-radius: 30px;}
+   from {border-radius: 0px;  background-color: yellow; }
+   to   {border-radius: 30px; background-color: red; }
 
 }
 
