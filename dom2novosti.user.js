@@ -279,7 +279,7 @@ function process_page()
           cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
         }
 
-        if( 1/*msg_date > last_msg*/) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
+        if( msg_date > last_msg ) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
     });
 	
 	$('ul.children').css('background-color', '');
