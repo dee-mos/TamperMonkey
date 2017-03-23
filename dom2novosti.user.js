@@ -133,21 +133,7 @@ function process_page()
 
     $('.comment-avatar').css( {'width' : '20px', 'height':'20px'});
 
-/*
-    last_menu_item = $('#menu-glavnoe li:last');
-    settings_menu_item = last_menu_item.clone();
-    settings_menu_item.id = 'settings_menu_item';
-    settings_menu_item.find('a').text('Настройки').attr('href','http://dom2novosti.ru/?compact=0');
-    last_menu_item.after( settings_menu_item );
-*/
     $('#theme-header').remove();
-
-/*
-<button class="btn_MenuUp">Slide up</button>\
-<button class="btn_MenuDown">Slide down</button>\
-    $(".btn_MenuDown").click( function() { $(".TopMenuBody").slideDown(); } );
-    $(".btn_MenuUp").click( function() { $(".TopMenuBody").slideUp(); } );
-*/
 
     // new form on top
     hdr = $('div.wrapper > div.container').prepend( 
@@ -172,13 +158,6 @@ function process_page()
     // hide text of article    
     if(!is_root_page) $('article div.entry').hide();
 
-/*
-    hdr = $('#theme-header');
-        
-    $('<input />', { type: 'checkbox', id: 'show_hide_entry', class: 'trigger_show_entry' }).appendTo(hdr);  
-    $('<label />', { text: 'Show/Hide' }).appendTo(hdr);    
-    $('#show_hide_entry').click(function() { $('article div.entry').toggle(); });     
-*/    
     $("article").each(function(index)
     {
         // minimize main page
