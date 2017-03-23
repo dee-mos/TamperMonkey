@@ -157,58 +157,62 @@ function process_page()
 
     $("article").each(function(index)
     {
-			// minimize main page
-			messages_count = $(this).find('span.post-comments').text();
-			$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
-			$(this).find('span').remove();
-			$(this).find('p.post-meta').remove();    
-					$(this).find("div.entry").before($(this).find('h2'));
+		// minimize main page
+		messages_count = $(this).find('span.post-comments').text();
+		$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
+		$(this).find('span').remove();
+		$(this).find('p.post-meta').remove();    
+        $(this).find("div.entry").before($(this).find('h2'));
 	    
 	    // make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
-      //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
-      $(this).css('background-color','#cccccc');
+        //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
+        $(this).css('background-color','#cccccc');
 
     	//console.log($(this).prop('href'));
-      $.ajax({
+        $.ajax({
           url: $(this).find('h2 > a').prop('href'),
     	  article_elem: $(this),
           success: function( data )
-          {
-						new_count = 0;
-						min_diff = 0;	
-						has_my_name = 0;
-						if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
-						{
-							post_id = RegExp.$1;
-							if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
-							{
-								comments = $('li', $(RegExp.$1));
-								comments.each(set_comment_attributes);
-								last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
-								comments.each(function(index)
-								{
-									datetime = dt.str2datetime( $(this).attr('timestamp') );
-									if(datetime > last_msg) 
-									{
-										new_count++;
-										if(datetime - last_msg < min_diff) { min_diff = datetime - last_msg; }
-									}
-								});
-							}
-							
-							$(this).attr('new_messages',new_count);
-							if(new_count > 0) { 
-								this.article_elem.css('background-color','#c4ffeb'); 
-								this.article_elem.attr('new_msg_count', new_count);      
-								this.article_elem.attr('min_time_diff', min_diff);
-								this.article_elem.prepend(
-									$('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
-								);
-							} else { 
-								this.article_elem.css('background-color','');
-							} 
-    	      } // if( data.match
-    	    } // success
+        {
+          new_count = 0;
+          min_diff = 0;	
+          has_my_name = 0;
+          if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
+    	  {
+    		  post_id = RegExp.$1;
+    		  if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
+    		  {
+                  comments = $('li', $(RegExp.$1));
+                  comments.each(set_comment_attributes);
+    			  last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
+    			  comments.each(function(index)
+    			  {
+    				  datetime = dt.str2datetime( $(this).attr('timestamp') );
+                      if($(this).attr('my_name') == 1) has_my_name++;
+    				  if(datetime > last_msg) 
+                      {
+					    new_count++;
+					    if(datetime - last_msg < min_diff) 
+                        {
+                            min_diff = datetime - last_msg;
+                        }
+				      }
+    			  });
+    		  }
+		  $(this).attr('new_messages',new_count);
+		  if(new_count > 0) { 
+			this.article_elem.css('background-color','#c4ffeb'); 
+			this.article_elem.attr('new_msg_count', new_count);      
+			this.article_elem.attr('min_time_diff', min_diff);
+			this.article_elem.prepend(
+			$('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
+			);
+		  } else { 
+			this.article_elem.css('background-color','');
+		  } 
+              
+    	  } // if( data.match
+    	} // success
       });
     });
 	
