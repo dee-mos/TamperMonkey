@@ -116,12 +116,11 @@ function process_page()
     $("footer").remove();
     $("div.footer-bottom").remove();
     $("div.post-navigation").remove();
-	
+    $('#theme-header').remove();
+		
     $('.item-list').css('padding','0 0');
 	
     $(".content").width("800");
-
-    $("#main-nav").css("cssText", "background-color: black !important;");
 
     $("span.comment-author-link.cwp-author-link").filter( function(index) { return my_name == $(this).text(); } ).css( "color", "red" );
 
@@ -133,10 +132,8 @@ function process_page()
 
     $('.comment-avatar').css( {'width' : '20px', 'height':'20px'});
 
-    $('#theme-header').remove();
-
     // new form on top
-    hdr = $('div.wrapper > div.container').prepend( 
+    $('div.wrapper > div.container').prepend( 
       $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
     $('#options_form').prepend(
       $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
@@ -160,61 +157,58 @@ function process_page()
 
     $("article").each(function(index)
     {
-        // minimize main page
-	messages_count = $(this).find('span.post-comments').text();
-	$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
-	$(this).find('span').remove();
-	$(this).find('p.post-meta').remove();    
-        $(this).find("div.entry").before($(this).find('h2'));
+			// minimize main page
+			messages_count = $(this).find('span.post-comments').text();
+			$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
+			$(this).find('span').remove();
+			$(this).find('p.post-meta').remove();    
+					$(this).find("div.entry").before($(this).find('h2'));
 	    
-	// make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
-        //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
-        $(this).css('background-color','#cccccc');
+	    // make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
+      //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
+      $(this).css('background-color','#cccccc');
 
     	//console.log($(this).prop('href'));
-        $.ajax({
+      $.ajax({
           url: $(this).find('h2 > a').prop('href'),
     	  article_elem: $(this),
           success: function( data )
-        {
-          new_count = 0;
-          min_diff = 0;	
-	  has_my_name = 0;
-          if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
-    	  {
-    		  post_id = RegExp.$1;
-    		  if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
-    		  {
-                  comments = $('li', $(RegExp.$1));
-                  comments.each(set_comment_attributes);
-    			  last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
-    			  comments.each(function(index)
-    			  {
-    				  datetime = dt.str2datetime( $(this).attr('timestamp') );
-    				  if(datetime > last_msg) 
-                      {
-					    new_count++;
-					    if(datetime - last_msg < min_diff) 
-                        {
-                            min_diff = datetime - last_msg;
-                        }
-				      }
-    			  });
-    		  }
-		  $(this).attr('new_messages',new_count);
-		  if(new_count > 0) { 
-			this.article_elem.css('background-color','#c4ffeb'); 
-			this.article_elem.attr('new_msg_count', new_count);      
-			this.article_elem.attr('min_time_diff', min_diff);
-			this.article_elem.prepend(
-			$('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
-			);
-		  } else { 
-			this.article_elem.css('background-color','');
-		  } 
-              
-    	  } // if( data.match
-    	} // success
+          {
+						new_count = 0;
+						min_diff = 0;	
+						has_my_name = 0;
+						if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
+						{
+							post_id = RegExp.$1;
+							if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
+							{
+								comments = $('li', $(RegExp.$1));
+								comments.each(set_comment_attributes);
+								last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
+								comments.each(function(index)
+								{
+									datetime = dt.str2datetime( $(this).attr('timestamp') );
+									if(datetime > last_msg) 
+									{
+										new_count++;
+										if(datetime - last_msg < min_diff) { min_diff = datetime - last_msg; }
+									}
+								});
+							}
+							
+							$(this).attr('new_messages',new_count);
+							if(new_count > 0) { 
+								this.article_elem.css('background-color','#c4ffeb'); 
+								this.article_elem.attr('new_msg_count', new_count);      
+								this.article_elem.attr('min_time_diff', min_diff);
+								this.article_elem.prepend(
+									$('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
+								);
+							} else { 
+								this.article_elem.css('background-color','');
+							} 
+    	      } // if( data.match
+    	    } // success
       });
     });
 	
@@ -237,32 +231,32 @@ function process_page()
     comments = $('div#comments li');
     comments.each(set_comment_attributes);
 
-	$('.commentlist .children').css('margin-top', '0');
+	  $('.commentlist .children').css('margin-top', '0');
 	
     $('div#comments li').each(function(index)
     {
-		set_comment_attributes(index, this);
+			set_comment_attributes(index, this);
 
-		$(this).css('margin-bottom', '4px');
+			$(this).css('margin-bottom', '4px');
 
-		cite_elem = $('cite:first', $(this));
-		timestamp = $(this).attr('timestamp');
-		author = $(this).attr('author');
-        diffh = Math.trunc( (Date.now() - dt.str2datetime(timestamp)) / (1000 * 60 * 60) ); // in hours
-        msg_date = add_date_time( timestamp ); // updates maxDate
+			cite_elem = $('cite:first', $(this));
+			timestamp = $(this).attr('timestamp');
+			author = $(this).attr('author');
+			diffh = Math.trunc( (Date.now() - dt.str2datetime(timestamp)) / (1000 * 60 * 60) ); // in hours
+			msg_date = add_date_time( timestamp ); // updates maxDate
 
-        elem_ava = $(this).find('div.comment-avatar');
-        if(diffh >= 0 && diffh < gradient.length) {  cite_elem.css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
-        if(my_name == author)
-        {
-          cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
-        }
+			elem_ava = $(this).find('div.comment-avatar');
+			if(diffh >= 0 && diffh < gradient.length) {  cite_elem.css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
+			if(my_name == author)
+			{
+				cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
+			}
 
-        if( msg_date > last_msg ) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
+			if( msg_date > last_msg ) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
     });
 	
-	$('ul.children').css('background-color', '');
-	$('div#comments li').css('background-color', '');
+	  $('ul.children').css('background-color', '');
+	  $('div#comments li').css('background-color', '');
 
     max_date_str = dt.strftime('%d.%m.%Y at %H:%M',maxDate);
 
@@ -274,9 +268,6 @@ function process_page()
     $('body').show();
 
 } // function process_page()
-
-
-
 
 
 //=======================================================================================================================================
