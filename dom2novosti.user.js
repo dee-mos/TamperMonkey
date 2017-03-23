@@ -165,7 +165,7 @@ function process_page()
 	$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
 	$(this).find('span').remove();
 	$(this).find('p.post-meta').remove();    
-        $(this).find("div.entry").before($(this).find('h2'));
+    $(this).find("div.entry").before($(this).find('h2'));
 	    
 	// make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
         //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
@@ -179,7 +179,7 @@ function process_page()
         {
           new_count = 0;
           min_diff = 0;	
-	  has_my_name = 0;
+          has_my_name = 0;
           if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
     	  {
     		  post_id = RegExp.$1;
@@ -191,6 +191,7 @@ function process_page()
     			  comments.each(function(index)
     			  {
     				  datetime = dt.str2datetime( $(this).attr('timestamp') );
+                      if($(this).attr('my_name') == 1) has_my_name++;
     				  if(datetime > last_msg) 
                       {
 					    new_count++;
