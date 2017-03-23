@@ -181,9 +181,6 @@ function parse_article() /* ====================================================
     gradient_steps = 12;	
     var gradient = make_gradient('#2FD9FB', '#FAD1D1', gradient_steps);
 
-    comments = $('div#comments li');
-    comments.each(set_comment_attributes);
-
     $('.commentlist .children').css('margin-top', '0');
 	
     $('div#comments li').each(function(index)
@@ -200,7 +197,7 @@ function parse_article() /* ====================================================
         
         console.log(timestamp, author, msg_date, msg_date - last_msg);
         
-        elem_ava = $(this).find('div.comment-avatar');
+        elem_ava = $(this).find('div.comment-avatar:first');
         if(diffh >= 0 && diffh < gradient.length) {  cite_elem.css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
         if(my_name == author)
         {
