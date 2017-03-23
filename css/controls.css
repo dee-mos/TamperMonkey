@@ -11,14 +11,13 @@
 
 div.d2topmenu
 {
-  padding: 16px 16px 16px 16px;
+  padding: 4px 4px 4px 4px;
   background-color: #fff7d5;
 }
 
 .d2topmenu input
 {
   display: inline;
-  margin-top: 8px;
 }
 
 /* ---------------------------------------------------------------------------------- */
