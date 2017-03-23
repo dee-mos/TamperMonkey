@@ -198,41 +198,38 @@ function process_page()
     	  article_elem: $(this),
           success: function( data )
         {
-          new_count = 0;
-          min_diff = 0;	
-	  has_my_name = 0;
-          if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
-    	  {
-    		  post_id = RegExp.$1;
-    		  if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
-    		  {
-                  comments = $('li', $(RegExp.$1));
-                  comments.each(set_comment_attributes);
-    			  last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
-    			  comments.each(function(index)
-    			  {
-    				  datetime = dt.str2datetime( $(this).attr('timestamp') );
-    				  if(datetime > last_msg) 
-                      {
-					    new_count++;
-					    if(datetime - last_msg < min_diff) 
+            new_count = 0;
+            min_diff = 0;	
+	    has_my_name = 0;
+            if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
+    	    {
+                post_id = RegExp.$1;
+    		if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
+    		{
+                    comments = $('li', $(RegExp.$1));
+                    comments.each(set_comment_attributes);
+    		    last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
+    		    comments.each(function(index)
+    		    {
+    		        datetime = dt.str2datetime( $(this).attr('timestamp') );
+    			if(datetime > last_msg) 
                         {
-                            min_diff = datetime - last_msg;
+			    new_count++;
+			    if(datetime - last_msg < min_diff) { min_diff = datetime - last_msg; }
                         }
-				      }
-    			  });
-    		  }
-		  $(this).attr('new_messages',new_count);
-		  if(new_count > 0) { 
+                    });
+    		}
+		$(this).attr('new_messages',new_count);
+		if(new_count > 0) { 
 			this.article_elem.css('background-color','#c4ffeb'); 
 			this.article_elem.attr('new_msg_count', new_count);      
 			this.article_elem.attr('min_time_diff', min_diff);
 			this.article_elem.prepend(
 			$('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
 			);
-		  } else { 
+		} else { 
 			this.article_elem.css('background-color','');
-		  } 
+		} 
               
     	  } // if( data.match
     	} // success
@@ -258,17 +255,17 @@ function process_page()
     comments = $('div#comments li');
     comments.each(set_comment_attributes);
 
-	$('.commentlist .children').css('margin-top', '0');
+    $('.commentlist .children').css('margin-top', '0');
 	
     $('div#comments li').each(function(index)
     {
-		set_comment_attributes(index, this);
+        set_comment_attributes(index, this);
 
-		$(this).css('margin-bottom', '4px');
+        $(this).css('margin-bottom', '4px');
 
-		cite_elem = $('cite:first', $(this));
-		timestamp = $(this).attr('timestamp');
-		author = $(this).attr('author');
+	cite_elem = $('cite:first', $(this));
+	timestamp = $(this).attr('timestamp');
+	author = $(this).attr('author');
         diffh = Math.trunc( (Date.now() - dt.str2datetime(timestamp)) / (1000 * 60 * 60) ); // in hours
         msg_date = add_date_time( timestamp ); // updates maxDate
 
@@ -279,11 +276,11 @@ function process_page()
           cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
         }
 
-        if( 1/*msg_date > last_msg*/) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
+        if( msg_date > last_msg ) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
     });
 	
-	$('ul.children').css('background-color', '');
-	$('div#comments li').css('background-color', '');
+    $('ul.children').css('background-color', '');
+    $('div#comments li').css('background-color', '');
 
     max_date_str = dt.strftime('%d.%m.%Y at %H:%M',maxDate);
 
@@ -305,7 +302,7 @@ function process_page()
 console.log('window.location.pathname = ' + window.location.pathname);
 console.log('window.location.href = ' + window.location.href);
 
-if( $.getUrlParam('compact') == '0' )
+if( $.getUrlParam('compact') == '0' ) // http://dom2novosti.ru/?compact=0
 {
 	$('body').show();
 	return;
