@@ -102,69 +102,20 @@ function get_articles(response)
   return $('<html />').html(response).find('article');
 }
 
-function process_page()
+function parse_page(jarticles) /* =============================================================================================================== */
 {
-    $("body").css("cssText", "background-image: none !important;");
-
-    //<link rel="shortcut icon" href="http://dom2novosti.ru/wp-content/uploads/2016/11/favicon.ico" title="Favicon" /><!--[if IE]>    
-    $('link[title="Favicon"]').attr("href","http://www.stackoverflow.com/favicon.ico");
-        
-    $("#categories-4").remove();
-    $("#recent-posts-2").remove();
-    $("div.logo").remove();
-    $("#theme-header > div").remove();
-    $("footer").remove();
-    $("div.footer-bottom").remove();
-    $("div.post-navigation").remove();
-    $('#theme-header').remove();
-		
-    $('.item-list').css('padding','0 0');
-	
-    $(".content").width("800");
-
-    $("span.comment-author-link.cwp-author-link").filter( function(index) { return my_name == $(this).text(); } ).css( "color", "red" );
-
-    $("img.attachment-tie-large.size-tie-large.wp-post-image").width(100);
-
-    $('article a.more-link').hide();
-
-    $('.post-title').addClass('post-title-new').removeClass('post-title');
-
-    $('.comment-avatar').css( {'width' : '20px', 'height':'20px'});
-
-    // new form on top
-    $('div.wrapper > div.container').prepend( 
-      $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
-    $('#options_form').prepend(
-      $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
-      $('<span />'),
-      $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
-      $('<label />',  { text: 'Show/Hide articles' }),
-      $('<span />'),
-      $('<label />',  { text: 'Name:' }),
-      $('<input />',  { type: 'text', id: 'cfg_my_name', value: name }),
-      $('<button />', { id: 'btn_menu_ok', text: 'OK' })
-    );    
-
-    GM_addStyle(".ginput { all: initial; * { all: unset; } }" );
-
-    $('#cfg_my_name').val(my_name);
-    $('#cfg_show_hide_articles').click(function() { $('article div.entry').toggle(); });     
-    $("#btn_menu_ok").click( function() { GM_setValue('dom2novosti_user_name',$('#cfg_my_name').val() ); } );
-
-    // hide text of article    
-    if(!is_root_page) $('article div.entry').hide();
-
+    console.log('parsing page...');
+    
     $("article").each(function(index)
     {
-		// minimize main page
-		messages_count = $(this).find('span.post-comments').text();
-		$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
-		$(this).find('span').remove();
-		$(this).find('p.post-meta').remove();    
-        $(this).find("div.entry").before($(this).find('h2'));
+        // minimize main page
+	messages_count = $(this).find('span.post-comments').text();
+	$(this).css( {'margin-bottom': '2px', 'overflow': 'hidden' } );    
+	$(this).find('span').remove();
+	$(this).find('p.post-meta').remove();    
+    $(this).find("div.entry").before($(this).find('h2'));
 	    
-	    // make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
+	// make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
         //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
         $(this).css('background-color','#cccccc');
 
@@ -185,6 +136,10 @@ function process_page()
                   comments = $('li', $(RegExp.$1));
                   comments.each(set_comment_attributes);
     			  last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
+                  
+                  console.log("[-] post_id = " + post_id );    
+                  console.log("[-] last_msg = " + last_msg );    
+                  
     			  comments.each(function(index)
     			  {
     				  datetime = dt.str2datetime( $(this).attr('timestamp') );
@@ -215,17 +170,16 @@ function process_page()
     	} // success
       });
     });
-	
-    // insert checkbox to hide/show articles    
-    hdr = $('#theme-header');
-    $('<input />', { type: 'checkbox', id: 'show_hide_articles', class: 'gcheckbox', value: name }).appendTo(hdr);  
-    $('<label />', { 'for': 'show_hide_articles', text: 'Show/Hide articles' }).appendTo(hdr);    
-        
+}
+
+function parse_article() /* =============================================================================================================== */
+{
+    console.log('parsing article...');
+    
     post_id = get_post_id();
-
-    //console.log("post_id = " + post_id );
-
     last_msg = dt.str2datetime( GM_getValue(post_id, null) ) ;
+    console.log("[A] post_id = " + post_id );    
+    console.log("[A] last_msg = " + last_msg );    
 
     maxDate = new Date(1500,1,1);
 
@@ -235,43 +189,110 @@ function process_page()
     comments = $('div#comments li');
     comments.each(set_comment_attributes);
 
-	  $('.commentlist .children').css('margin-top', '0');
+	$('.commentlist .children').css('margin-top', '0');
 	
     $('div#comments li').each(function(index)
     {
-			set_comment_attributes(index, this);
+		set_comment_attributes(index, this);
 
-			$(this).css('margin-bottom', '4px');
+		$(this).css('margin-bottom', '4px');
 
-			cite_elem = $('cite:first', $(this));
-			timestamp = $(this).attr('timestamp');
-			author = $(this).attr('author');
-			diffh = Math.trunc( (Date.now() - dt.str2datetime(timestamp)) / (1000 * 60 * 60) ); // in hours
-			msg_date = add_date_time( timestamp ); // updates maxDate
+		cite_elem = $('cite:first', $(this));
+		timestamp = $(this).attr('timestamp');
+		author = $(this).attr('author');
+        diffh = Math.trunc( (Date.now() - dt.str2datetime(timestamp)) / (1000 * 60 * 60) ); // in hours
+        msg_date = add_date_time( timestamp ); // updates maxDate
+        
+        console.log(timestamp, author, msg_date, msg_date - last_msg);
+        
+        elem_ava = $(this).find('div.comment-avatar');
+        if(diffh >= 0 && diffh < gradient.length) {  cite_elem.css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
+        if(my_name == author)
+        {
+          cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
+        }
 
-			elem_ava = $(this).find('div.comment-avatar');
-			if(diffh >= 0 && diffh < gradient.length) {  cite_elem.css({'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", gradient[diffh] );  }
-			if(my_name == author)
-			{
-				cite_elem.css({'color' : 'red', 'font-weight':'bold'}).closest( "li" ).find( "*" ).css( "background-color", "#b9ffd5" );
-			}
-
-			if( msg_date > last_msg ) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
+        if( msg_date > last_msg ) { elem_ava.css( "background-color", "#fdff8d"); elem_ava.addClass('animation_01'); } else { elem_ava.hide(); }
     });
 	
-	  $('ul.children').css('background-color', '');
-	  $('div#comments li').css('background-color', '');
+	$('ul.children').css('background-color', '');
+	$('div#comments li').css('background-color', '');
 
     max_date_str = dt.strftime('%d.%m.%Y at %H:%M',maxDate);
 
     GM_setValue(post_id, max_date_str);
+}
 
+function process_page()
+{
+    $("body").css("cssText", "background-image: none !important;");
+
+    //<link rel="shortcut icon" href="http://dom2novosti.ru/wp-content/uploads/2016/11/favicon.ico" title="Favicon" /><!--[if IE]>    
+    //$('link[title="Favicon"]').attr("href","http://www.stackoverflow.com/favicon.ico");
+        
+    $("#categories-4").remove();
+    $("#recent-posts-2").remove();
+    $("div.logo").remove();
+    $("#theme-header > div").remove();
+    $("footer").remove();
+    $("div.footer-bottom").remove();
+    $("div.post-navigation").remove();
+    
+    $('.item-list').css('padding','0 0');
+	
+    $(".content").width("800");
+
+    $("#main-nav").css("cssText", "background-color: black !important;");
+
+    $("span.comment-author-link.cwp-author-link").filter( function(index) { return my_name == $(this).text(); } ).css( "color", "red" );
+
+    $("img.attachment-tie-large.size-tie-large.wp-post-image").width(100);
+
+    $('article a.more-link').hide();
+
+    $('.post-title').addClass('post-title-new').removeClass('post-title');
+
+    $('.comment-avatar').css( {'width' : '20px', 'height':'20px'});
+
+    $('#theme-header').remove();
+
+    // new form on top
+    hdr = $('div.wrapper > div.container').prepend( 
+      $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
+    $('#options_form').prepend(
+      $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
+      $('<span />'),
+      $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
+      $('<label />',  { text: 'Show/Hide articles' }),
+      $('<span />'),
+      $('<label />',  { text: 'Name:' }),
+      $('<input />',  { type: 'text', id: 'cfg_my_name', value: name }),
+      $('<button />', { id: 'btn_menu_ok', text: 'OK' })
+    );    
+
+    GM_addStyle(".ginput { all: initial; * { all: unset; } }" );
+
+    $('#cfg_my_name').val(my_name);
+    $('#cfg_show_hide_articles').click(function() { $('article div.entry').toggle(); });     
+    $("#btn_menu_ok").click( function() { GM_setValue('dom2novosti_user_name',$('#cfg_my_name').val() ); } );
+
+    // hide text of article    
+    if(!is_root_page) $('article div.entry').hide();
+
+    if(is_page) 
+        parse_page( $("article") );
+    else if (is_article)
+        parse_article();
+        
     document.body.onmousedown = undefined;
     document.body.onselectstart = undefined;
 	
     $('body').show();
 
 } // function process_page()
+
+
+
 
 
 //=======================================================================================================================================
@@ -288,6 +309,7 @@ if( $.getUrlParam('compact') == '0' )
 // '/' or '/page/3/'
 is_root_page = (window.location.pathname == '/');
 is_page = is_root_page || (window.location.pathname.match(/^\/page\/\d+\/$/) !== null);
+is_article = !is_page;
 
 my_name = GM_getValue('dom2novosti_user_name');
 console.log('My name = ' + my_name);
