@@ -1,4 +1,4 @@
-.d2topmenu
+﻿.d2topmenu
 {
   font-weight: bold;
   display: inline;
@@ -11,14 +11,17 @@
 
 div.d2topmenu
 {
-  padding: 10px 10px 10px 10px;
+  padding: 16px 16px 16px 16px;
   background-color: #fff7d5;
 }
 
 .d2topmenu input
 {
   display: inline;
+  margin-top: 8px;
 }
+
+/* ---------------------------------------------------------------------------------- */
 
 /* Cначала обозначаем стили для IE8 и более старых версий
 т.е. здесь мы немного облагораживаем стандартный чекбокс. */
