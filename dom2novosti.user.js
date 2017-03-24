@@ -123,49 +123,50 @@ function parse_page(jarticles) /* ==============================================
 
     	//console.log($(this).prop('href'));
         $.ajax({
-          url: $(this).find('h2 > a').prop('href'),
-    	  article_elem: $(this),
-          success: function( data )
-        {
-            new_count = 0;
-            min_diff = 0;	
-	    has_my_name = 0;
-            if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
-    	    {
-                post_id = RegExp.$1;
-    		if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
-    		{
-                    comments = $('li', $(RegExp.$1));
-                    comments.each(set_comment_attributes);
-    		    last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
-                    console.log("[-] post_id = " + post_id );    
-                    console.log("[-] last_msg = " + last_msg );    
-    		    comments.each(function(index)
-    		    {
-    		        datetime = dt.str2datetime( $(this).attr('timestamp') );
-                        if($(this).attr('my_name') == 1) has_my_name++;
-    			if(datetime > last_msg) 
+            url: $(this).find('h2 > a').prop('href'),
+    	    article_elem: $(this),
+            success: function( data )
+            {
+                new_count = 0;
+                min_diff = 0;	
+                has_my_name = 0;
+                if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
+                {
+                    post_id = RegExp.$1;
+                    if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
+                    {
+                        comments = $('li', $(RegExp.$1));
+                        comments.each(set_comment_attributes);
+                        last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
+                        console.log("[-] post_id = " + post_id );    
+                        console.log("[-] last_msg = " + last_msg );    
+                        comments.each(function(index)
                         {
-			    new_count++;
-			    if(datetime - last_msg < min_diff) { min_diff = datetime - last_msg; }
-                        }
-                    });
-    		}
-		$(this).attr('new_messages',new_count);
-		if(new_count > 0) { 
-			this.article_elem.css('background-color','#c4ffeb'); 
-			this.article_elem.attr('new_msg_count', new_count);      
-			this.article_elem.attr('min_time_diff', min_diff);
-			this.article_elem.prepend(
-			$('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
-			);
-		} else { 
-			this.article_elem.css('background-color','');
-		} 
-              
-    	  } // if( data.match
-    	} // success
-      });
+                            datetime = dt.str2datetime( $(this).attr('timestamp') );
+                            if($(this).attr('my_name') == 1) has_my_name++;
+                            if(datetime > last_msg) 
+                            {
+                                new_count++;
+                                if(datetime - last_msg < min_diff) { min_diff = datetime - last_msg; }
+                            }
+                        });
+                    }
+                    
+                    $(this).attr('new_messages',new_count);
+                    if(new_count > 0) { 
+                        this.article_elem.css('background-color','#c4ffeb'); 
+                        this.article_elem.attr('new_msg_count', new_count);      
+                        this.article_elem.attr('min_time_diff', min_diff);
+                        this.article_elem.prepend(
+                            $('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
+                        );
+                    } else { 
+                        this.article_elem.css('background-color','');
+                    } 
+                  
+                } // if( data.match
+    	    }// success
+        });
     });
 }
 
@@ -191,9 +192,9 @@ function parse_article() /* ====================================================
 
         $(this).css('margin-bottom', '4px');
 
-	cite_elem = $('cite:first', $(this));
-	timestamp = $(this).attr('timestamp');
-	author = $(this).attr('author');
+        cite_elem = $('cite:first', $(this));
+        timestamp = $(this).attr('timestamp');
+        author = $(this).attr('author');
         diffh = Math.trunc( (Date.now() - dt.str2datetime(timestamp)) / (1000 * 60 * 60) ); // in hours
         msg_date = add_date_time( timestamp ); // updates maxDate
         
@@ -252,16 +253,16 @@ function process_page()
 
     // new form on top
     hdr = $('div.wrapper > div.container').prepend( 
-      $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
+        $('<div />',    { class: 'd2topmenu', id: 'options_form' } ) );
     $('#options_form').prepend(
-      $('<a />',     { href: 'http://dom2novosti.ru/', text: 'Главная' }),
-      $('<span />'),
-      $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
-      $('<label />',  { text: 'Show/Hide articles' }),
-      $('<span />'),
-      $('<label />',  { text: 'Name:' }),
-      $('<input />',  { type: 'text', id: 'cfg_my_name', value: name }),
-      $('<button />', { id: 'btn_menu_ok', text: 'OK' })
+        $('<a />',      { href: 'http://dom2novosti.ru/', text: 'Главная' }),
+        $('<span />'),
+        $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
+        $('<label />',  { text: 'Show/Hide articles' }),
+        $('<span />'),
+        $('<label />',  { text: 'Name:' }),
+        $('<input />',  { type: 'text', id: 'cfg_my_name', value: name }),
+        $('<button />', { id: 'btn_menu_ok', text: 'OK' })
     );    
 
     GM_addStyle(".ginput { all: initial; * { all: unset; } }" );
