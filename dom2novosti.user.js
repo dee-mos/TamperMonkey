@@ -118,6 +118,8 @@ function parse_page(jarticles) /* ==============================================
 	// make a code around image:  <span id="mouseOver"><img src="http://placekitten.com/120/120"></span>
         //$(this).find('div.post-thumbnail > a').wrap('<span class="mouseImageZoomOver"></span>');
         $(this).css('background-color','#cccccc');
+        
+        $(this).find('h2 > a').attr('target','_blank');
 
     	//console.log($(this).prop('href'));
         $.ajax({
