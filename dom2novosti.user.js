@@ -153,17 +153,23 @@ function parse_page(jarticles) /* ==============================================
                     }
                     
                     $(this).attr('new_messages',new_count);
-                    if(new_count > 0) { 
-                        this.article_elem.css('background-color','#c4ffeb'); 
-                        this.article_elem.attr('new_msg_count', new_count);      
+                    if(new_count > 0) {
+                        this.article_elem.css('background-color','#c4ffeb');
+                        this.article_elem.attr('new_msg_count', new_count);
                         this.article_elem.attr('min_time_diff', min_diff);
-                        this.article_elem.prepend(
-                            $('<div />', { style: 'float: right; background-color: ' + (has_my_name ? '#ffc290' : '#9fe1ff') + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(new_count)
-                        );
-                    } else { 
+                    } else {
                         this.article_elem.css('background-color','');
-                    } 
-                  
+                    }
+
+                    if( (new_count > 0) || (has_my_name) )
+					{
+						count_txt = new_count ? new_count : '';
+						div_color = has_my_name ? (new_count ? '#ffc290' : '#fde6d2') : '#9fe1ff';
+					    this.article_elem.prepend(
+                            $('<div />', { style: 'float: right; background-color: ' + div_color + '; width: 24px; margin-bottom: -99999px; padding-bottom: 99999px; text-align: center;' } ).text(count_txt)
+                        );
+					}
+                    
                 } // if( data.match
     	    }// success
         });
