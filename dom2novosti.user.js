@@ -102,6 +102,11 @@ function get_articles(response)
   return $('<html />').html(response).find('article');
 }
 
+function set_max_timestamp(key,value)
+{
+    GM_setValue(key, dt.strftime('%d.%m.%Y at %H:%M',value));
+}
+
 function parse_page(jarticles) /* =============================================================================================================== */
 {
     console.log('parsing page...');
@@ -132,14 +137,15 @@ function parse_page(jarticles) /* ==============================================
                 has_my_name = 0;
                 if( data.match(/<link rel='shortlink' href='http:\/\/dom2novosti.ru\/\?p=(\d+)' \/>/gi) )
                 {
-                    post_id = RegExp.$1;
+                    post_id = 'postid-' + RegExp.$1;
                     if( data.match(/(<div id="comments">[\s\S]*?)<!-- #comments -->/gim) )
                     {
                         comments = $('li', $(RegExp.$1));
                         comments.each(set_comment_attributes);
-                        last_msg = dt.str2datetime( GM_getValue('postid-'+post_id, null) );
+                        last_msg = dt.str2datetime( GM_getValue(post_id, null) );
                         console.log("[-] post_id = " + post_id );    
                         console.log("[-] last_msg = " + last_msg );    
+                        maxDate = new Date(1500,1,1);
                         comments.each(function(index)
                         {
                             datetime = dt.str2datetime( $(this).attr('timestamp') );
@@ -149,7 +155,13 @@ function parse_page(jarticles) /* ==============================================
                                 new_count++;
                                 if(datetime - last_msg < min_diff) { min_diff = datetime - last_msg; }
                             }
+                            if(datetime > maxDate) { maxDate = datetime; }
                         });
+                        if( arg_resettime == 1 )
+                        {
+                            set_max_timestamp( post_id, maxDate );
+                            new_count = 0;
+                        }
                     }
                     
                     $(this).attr('new_messages',new_count);
@@ -219,9 +231,7 @@ function parse_article() /* ====================================================
     $('ul.children').css('background-color', '');
     $('div#comments li').css('background-color', '');
 
-    max_date_str = dt.strftime('%d.%m.%Y at %H:%M',maxDate);
-
-    GM_setValue(post_id, max_date_str);
+    set_max_timestamp( post_id, maxDate );
 }
 
 function process_page()
@@ -306,6 +316,8 @@ if( $.getUrlParam('compact') == '0' ) // http://dom2novosti.ru/?compact=0
 	$('body').show();
 	return;
 }	
+
+arg_resettime = $.getUrlParam('resettime'); // http://dom2novosti.ru/?resettime=1 
 
 // '/' or '/page/3/'
 is_root_page = (window.location.pathname == '/');
