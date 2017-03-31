@@ -302,14 +302,51 @@ function process_page()
 
 } // function process_page()
 
-
-
-
+function show_config() /* =============================================================================================================== */
+{
+    $('body *').remove();
+    
+    $('body').prepend( 
+        $('<div />',    { class: 'd2topmenu', id: 'config' } ) );
+    
+    $('#config').prepend( '<table class="config-table"><tr><th>Параметр</th><th>Значение</th></tr></table>' );
+    
+    $('.config-table tr:last').after( 
+        '<tr><td>Aaaaaa</td><td>12345</td></tr>',
+        '<tr><td>Aaaaaa</td><td>2222</td></tr>',
+        '<tr><td>Aaaaaa</td><td>3333</td></tr>'        
+    );
+    
+/*    
+    $('#config').prepend(
+        $('<a />',      { href: 'http://dom2novosti.ru/', text: 'Главная' }),
+        $('<span />'),
+        $('<input />',  { type: 'checkbox', id: 'cfg_show_hide_articles', value: name }), // class: 'gcheckbox',
+        $('<label />',  { text: 'Show/Hide articles' }),
+        $('<span />'),
+        $('<label />',  { text: 'Name:' }),
+        $('<input />',  { type: 'text', id: 'cfg_my_name', value: name }),
+        $('<button />', { id: 'btn_menu_ok', text: 'OK' })
+    );    
+*/    
+    $('body').show();
+}
 
 //=======================================================================================================================================
 
 console.log('window.location.pathname = ' + window.location.pathname);
 console.log('window.location.href = ' + window.location.href);
+
+GM_addStyle( GM_getResourceText ("animated_css") );
+GM_addStyle( GM_getResourceText ("animation2_css") );
+GM_addStyle( GM_getResourceText ("controls_css") );
+GM_addStyle( GM_getResourceText ("common_css") );
+
+if( $.getUrlParam('config') == '1' ) // http://dom2novosti.ru/?config=1
+{
+	show_config();
+	return;
+}	
 
 if( $.getUrlParam('compact') == '0' ) // http://dom2novosti.ru/?compact=0
 {
@@ -329,11 +366,6 @@ console.log('My name = ' + my_name);
 
 GM_addStyle("div.header { display: none !important; }");
 GM_addStyle("::-webkit-scrollbar {width: 24px;height:8px;}");
-
-GM_addStyle( GM_getResourceText ("animated_css") );
-GM_addStyle( GM_getResourceText ("animation2_css") );
-GM_addStyle( GM_getResourceText ("controls_css") );
-GM_addStyle( GM_getResourceText ("common_css") );
 
 GM_addStyle(".new_messages_counter { border-radius: 10px; background: #ff0000; padding: 2px; color: #ffffff; }");
 GM_addStyle(".post-title-new { font-size: 16px; font-weight: bold; }" );

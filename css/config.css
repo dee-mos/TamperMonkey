@@ -1,0 +1,35 @@
+.config-table   
+{
+  border-collapse:collapse;
+  border-spacing:0;
+  border-color:#bbb;
+}
+
+.config-table td
+{
+  padding:10px 5px;
+  border-style:solid;
+  border-width:0px;
+  overflow:hidden;
+  word-break:normal;
+  border-color:#bbb;
+  color:#594F4F;
+  background-color:#E0FFEB;
+  border-top-width:1px;
+  border-bottom-width:1px;
+}
+
+.config-table th
+{
+  padding:10px 5px;
+  border-style:solid;
+  border-width:0px;
+  overflow:hidden;
+  word-break:normal;
+  border-color:#bbb;
+  color:#493F3F;
+  background-color:#9DE0AD;
+  border-top-width:1px;
+  border-bottom-width:1px;
+}
+
