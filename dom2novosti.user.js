@@ -13,6 +13,7 @@
 // @resource     animated_css    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animated.css
 // @resource     animation2_css  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/animation2.css
 // @resource     common_css      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/common.css
+// @resource     config_css      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/css/config.css
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
@@ -306,16 +307,21 @@ function show_config() /* ======================================================
 {
     $('body *').remove();
     
+    GM_addStyle('div.config { margin: 32px; padding: 8px; width: 800px; }');
+    
     $('body').prepend( 
-        $('<div />',    { class: 'd2topmenu', id: 'config' } ) );
+        $('<div />',    { class: 'd2topmenu config', id: 'config' } ) );
     
     $('#config').prepend( '<table class="config-table"><tr><th>Параметр</th><th>Значение</th></tr></table>' );
     
     $('.config-table tr:last').after( 
         '<tr><td>Aaaaaa</td><td>12345</td></tr>',
         '<tr><td>Aaaaaa</td><td>2222</td></tr>',
-        '<tr><td>Aaaaaa</td><td>3333</td></tr>'        
+        '<tr><td>Aaaaaa</td><td>3333</td></tr>',
+        $('<button />', { id: 'config_save', text: 'Save' })
     );
+    
+    $("#config_save").click( function() { GM_setValue('dom2novosti_config', '???' ); } );
     
 /*    
     $('#config').prepend(
@@ -341,6 +347,7 @@ GM_addStyle( GM_getResourceText ("animated_css") );
 GM_addStyle( GM_getResourceText ("animation2_css") );
 GM_addStyle( GM_getResourceText ("controls_css") );
 GM_addStyle( GM_getResourceText ("common_css") );
+GM_addStyle( GM_getResourceText ("config_css") );
 
 if( $.getUrlParam('config') == '1' ) // http://dom2novosti.ru/?config=1
 {
