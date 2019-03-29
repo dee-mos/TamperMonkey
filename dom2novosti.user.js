@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         dom2novosti
 // @namespace    DeeTamper
-// @version      0.1
+// @version      0.1.1
 // @description  dom2novosti
 // @author       Dee
 // @match        http://*.dom2novosti.ru/*
