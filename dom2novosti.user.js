@@ -19,8 +19,9 @@
 // @grant        GM_setValue
 // @grant        GM_getResourceURL
 // @grant        GM_getResourceText
+// @downloadURL  https://github.com/dee-mos/TamperMonkey/raw/master/dom2novosti.user.js
+// @updateURL    https://github.com/dee-mos/TamperMonkey/raw/master/dom2novosti.user.js
 // ==/UserScript==
-
 //debugger;
 
 $.getUrlParam = function(param)
