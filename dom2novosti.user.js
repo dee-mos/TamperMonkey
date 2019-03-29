@@ -5,7 +5,7 @@
 // @description  dom2novosti
 // @author       Dee
 // @match        http://*.dom2novosti.ru/*
-// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
+// @require      http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/datetime.js
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/dom.js
 // @require      https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/libs/KolorWheel.min.js
