@@ -4,6 +4,7 @@
 // @version      1.0.1
 // @description  try to take over the world!
 // @author       Dimus
+// @include      https://lichess.org/*
 // @match        https://lichess.org
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=lichess.org
 // @grant        none
