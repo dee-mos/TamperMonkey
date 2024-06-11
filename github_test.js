@@ -8,6 +8,7 @@
 // @match        https://lichess.org
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=lichess.org
 // @grant        none
+// @downloadURL  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/github_test.js
 // ==/UserScript==
 
 (function() {
