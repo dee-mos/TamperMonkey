@@ -290,7 +290,7 @@
         }
     }
 
-    setTimeout( setup_controls, 2000 );
+    setTimeout( setup_controls, 1500 );
 
     })();
 
