@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Lichess. View Training PGN
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       Dimus
 // @require      http://code.jquery.com/jquery-latest.js
@@ -11,6 +11,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=lichess.org
 // @grant        GM_xmlhttpRequest
 // @downloadURL  https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/lichess_helper.js
+// @updateURL    https://raw.githubusercontent.com/dee-mos/TamperMonkey/master/lichess_helper.js
 // ==/UserScript==
 
 (function() {
